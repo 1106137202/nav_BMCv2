@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">nav_BMCv2</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string-array name="spnMonth">
+        <item>五月份</item>
+        <item>四月份</item>
+        <item>三月份</item>
+        <item>二月份</item>
+        <item>一月份</item>
+    </string-array>
+
+    <string-array name="page">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string name="OK">OK</string>
+    <string name="NG">NG</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">完成</string>
+
+    <string-array name="memo">
+        <item>待解析</item>
+        <item>待料/待工</item>
+        <item>其他</item>
+    </string-array>
+
+
+    <string-array name="attr">
+        <item>全部</item>
+        <item>已進行</item>
+        <item>未進行</item>
+    </string-array>
+
+    <string-array name="type">
+        <item>全部</item>
+        <item>公告事項</item>
+        <item>技術通報</item>
+    </string-array>
+</resources>
