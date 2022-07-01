@@ -20,7 +20,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class api {
+public class Api {
 
     private static void login(double lat, double lng){
         String url = "https://dr.kymco.com/api/login";
@@ -126,6 +126,17 @@ public class api {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public static void dataList(){
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create("", mediaType);
+        Request request = new Request.Builder()
+                .url("http://nekomatsuri.ddns.net/test.json")
+                .method("GET", body)
+                .build();
     }
 
 }

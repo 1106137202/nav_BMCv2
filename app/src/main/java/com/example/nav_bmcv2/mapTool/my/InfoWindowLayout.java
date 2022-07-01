@@ -49,7 +49,7 @@ public class InfoWindowLayout {
             protected void onClickConfirmed(View v, Marker marker) {
                 //todo
 
-                Toast.makeText(context, "cancel", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "cancel", Toast.LENGTH_SHORT).show();
             }
         };
         //cancel事件加入
@@ -82,7 +82,7 @@ public class InfoWindowLayout {
                 builder.show();
 
                 //todo
-                Toast.makeText(context, "confirm", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "confirm", Toast.LENGTH_SHORT).show();
             }
         };
         //confirm事件加入
@@ -97,6 +97,7 @@ public class InfoWindowLayout {
 
             @Override
             public View getInfoContents(Marker marker) {
+                //初始化marker
                 cancelListener.setMarker(marker);
                 confirmListener.setMarker(marker);
                 // We must call this to set the current marker and infoWindow references

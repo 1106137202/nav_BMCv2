@@ -1,4 +1,4 @@
-package com.example.nav_bmcv2.ui.search;
+package com.example.nav_bmcv2.ui.setting;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,18 +14,18 @@ import android.view.ViewGroup;
 
 import com.example.nav_bmcv2.R;
 
-public class SearchFragment extends Fragment {
+public class SettingFragment extends Fragment {
 
-    private SearchViewModel mViewModel;
+    private SettingViewModel mViewModel;
 
-    public static SearchFragment newInstance() {
-        return new SearchFragment();
+    public static SettingFragment newInstance() {
+        return new SettingFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.search_fragment, container, false);
+        View view = inflater.inflate(R.layout.map_list_fragment, container, false);
 
         return view;
     }

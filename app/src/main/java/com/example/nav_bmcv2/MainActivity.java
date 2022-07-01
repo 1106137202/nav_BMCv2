@@ -1,12 +1,16 @@
 package com.example.nav_bmcv2;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_todo, R.id.nav_undone, R.id.nav_finish, R.id.nav_total, R.id.nav_search, R.id.nav_rate)
+                R.id.nav_todo, R.id.nav_undone, R.id.nav_finish, R.id.nav_total, R.id.nav_rate)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -54,6 +58,23 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_setting:
+                Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
+                break;
+            case  R.id.list:
+                FragmentManager fm = getSupportFragmentManager();
+                Fragment effectsFragment = fm.findFragmentById(R.id.mapList);
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

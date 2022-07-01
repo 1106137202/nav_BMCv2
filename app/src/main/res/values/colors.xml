@@ -28,7 +28,8 @@
     <color name="gary_6">#4E4E4E</color>
 
     <color name="route">#921AFF</color>
-    <color name="item">#F0F0F0</color>
+    <color name="item">#FFFCEC</color>
+    <color name="item_read">#F0F0F0</color>
 
     <color name="OK">#81be50</color>
     <color name="NG">#ea4848</color>

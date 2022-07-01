@@ -42,12 +42,7 @@ public class TodoFragment extends Fragment {
         for (int i = 0;i<10;i++){
             HashMap<String,String> hashMap = new HashMap<>();
             hashMap.put("Id",String.format("技術通報",i+1));
-            hashMap.put("tvDate",String.format("2022/06/17 15:26",i+1));
-            hashMap.put("Sub2",String.valueOf(new Random().nextInt(80) + 20));
             hashMap.put("Avg",String.format("系統已維護完畢，謝謝大家配合",i+1));
-//            hashMap.put("Avg",String.valueOf(
-//                    (Integer.parseInt(hashMap.get("Sub1"))
-//                            +Integer.parseInt(hashMap.get("Sub2")))/2));
 
             arrayList.add(hashMap);
         }
@@ -84,16 +79,6 @@ public class TodoFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(TOdoListAdapter.ViewHolder holder, int position) {
-//            int avgS = Integer.parseInt(arrayList.get(position).get("Avg"));
-//            if (avgS>=80){
-//                holder.tvId.setBackgroundResource(R.color.green_TOKIWA);
-//            }else if (avgS<80 &&avgS>=60){
-//                holder.tvId.setBackgroundResource(R.color.blue_RURI);
-//            }else if(avgS<60 &&avgS>=40){
-//                holder.tvId.setBackgroundResource(R.color.yellow_YAMABUKI);
-//            }else {
-//                holder.tvId.setBackgroundResource(R.color.red_GINSYU);
-//            }
             holder.tvId.setText(arrayList.get(position).get("Id"));
             holder.tvDate.setText(arrayList.get(position).get("tvDate"));
             holder.tvAvg.setText(arrayList.get(position).get("Avg"));
