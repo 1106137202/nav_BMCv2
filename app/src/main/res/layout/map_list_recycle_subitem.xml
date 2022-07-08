@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/Map_List_subitem_background"
+    android:layout_margin="10dp"
+    android:id="@+id/LLRicycleView"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textView_Error_Question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="異常問題"
+        android:textSize="18sp"
+        android:textColor="@color/Map_List_subitem_textcolor"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_gravity="center" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_margin="10dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/check_2"
+        android:scaleType="fitXY"
+        android:layout_gravity="right|center_vertical"/>
+
+</LinearLayout>
