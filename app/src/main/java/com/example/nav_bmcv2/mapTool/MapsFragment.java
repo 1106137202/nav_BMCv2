@@ -100,6 +100,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                 SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
                 mapFragment.getMapAsync(this);
 
+                LayoutInflater factory = LayoutInflater.from(getContext());
+                View myView = factory.inflate(R.layout.icon_marker_count, null);
+
                 new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -173,12 +176,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                                 LatLng location3 = new LatLng(22.504033, 120.386722);
                                 LatLng location4 = new LatLng(22.796455, 120.457184);
 
+                                ArrayList<LatLng> loctionArray = new ArrayList<>();
+
+
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                                RelativeLayout icon = (RelativeLayout)view.findViewById(R.id.icon_marker_count);
                                                 mMap.addMarker(new MarkerOptions().position(location1)
-                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.convertViewToBitmap(icon))));
+                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.convertViewToBitmap(myView, 8))));
                                                 mMap.addMarker(new MarkerOptions().position(location2)
                                                         .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.flashb, getContext()))));
                                                 mMap.addMarker(new MarkerOptions().position(location3)
