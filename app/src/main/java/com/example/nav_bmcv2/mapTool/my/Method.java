@@ -2,7 +2,9 @@ package com.example.nav_bmcv2.mapTool.my;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
+import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
@@ -131,6 +133,56 @@ public class Method {
         Bitmap b = bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
         return smallMarker;
+    }
+
+    public static Bitmap getViewBitmap(View v) {
+        v.clearFocus ();
+        v.setPressed(false);
+        boolean willNotCache = v.willNotCacheDrawing();
+        v.setWillNotCacheDrawing(false);
+        int color = v.getDrawingCacheBackgroundColor();
+        v.setDrawingCacheBackgroundColor(0);
+        if (color != 0) {
+            v.destroyDrawingCache();
+        }
+        v.buildDrawingCache();
+        Bitmap cacheBitmap = v.getDrawingCache();
+        if (cacheBitmap == null) {
+            return null;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
+        v.destroyDrawingCache();
+        v.setWillNotCacheDrawing(willNotCache);
+        v.setDrawingCacheBackgroundColor(color);
+        return bitmap;
+    }
+
+    public static Bitmap convertViewToBitmap(View v) {
+        v.setDrawingCacheEnabled(true);//w w  w . j av a 2  s  . c o m
+        v.measure(View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED), View.MeasureSpec
+                .makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+
+        v.buildDrawingCache(true);
+        Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
+        v.setDrawingCacheEnabled(false); // clear drawing cache
+        return b;
+    }
+
+    public static Bitmap getBitmapFromView(View view, int width, int height) {
+        int widthSpec = View.MeasureSpec.makeMeasureSpec(width,
+                View.MeasureSpec.EXACTLY);
+        int heightSpec = View.MeasureSpec.makeMeasureSpec(height,
+                View.MeasureSpec.EXACTLY);
+        view.measure(widthSpec, heightSpec);
+        view.layout(0, 0, width, height);
+        Bitmap bitmap = Bitmap.createBitmap(width, height,
+                Bitmap.Config.RGB_565);//from ww w  . j  a  va 2s .c om
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+
+        return bitmap;
     }
 
 }

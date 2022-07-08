@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.animation.RectEvaluator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,15 +17,19 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nav_bmcv2.mapTool.my.Api;
 import com.example.nav_bmcv2.mapTool.my.Data;
 import com.example.nav_bmcv2.mapTool.my.InfoWindowLayout;
 import com.example.nav_bmcv2.mapTool.my.Method;
@@ -45,13 +50,18 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
         private GoogleMap mMap;
+//        private FragmentFinishBinding binding;
         private FragmentFinishBinding binding;
 
         private ViewGroup infoWindow;
@@ -90,7 +100,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                 SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
                 mapFragment.getMapAsync(this);
 
-
+                new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                           Api.login();
+                        }
+                }).start();
                 // 建立一個GoogleApiClient物件。
                 mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                         .addConnectionCallbacks(this)
@@ -106,18 +121,90 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                                         return;
                                 Location location = locationResult.getLastLocation();
                                 LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
+                                new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                Api.snaptoRoad(point);
+                                                Api.punchInPoint(Data.now.get(Data.now.size()-1).latitude, Data.now.get(Data.now.size()-1).longitude);
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                        public void run() {
+                                                                View icon_marker = (View)view.findViewById(R.id.icon_marker_count);
+//                                                                mMap.addMarker(new MarkerOptions().position(Data.now.get(Data.now.size()-1)).title("目前")
+//                                                                        // below line is use to add custom marker on our map.
+//                                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.getViewBitmap(icon_marker))));
+                                                                mMap.addMarker(new MarkerOptions().position(Data.now.get(Data.now.size()-1)).title("目前")
+                                                                        // below line is use to add custom marker on our map.
+                                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.person, getActivity()))));
+                                                        }
+                                                });
+                                        }
+                                }).start();
 
                                 Data.now_position = point;
                                 System.out.println(mMap);
-                                mMap.addMarker(new MarkerOptions().position(Data.now_position).title("目前")
-                                        // below line is use to add custom marker on our map.
-                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.person, getActivity()))));
+//                                mMap.addMarker(new MarkerOptions().position(Data.now.get(Data.now.size()-1)).title("目前")
+//                                        // below line is use to add custom marker on our map.
+//                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.person, getActivity()))));
 
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Data.now_position, 20));
                                 //my_map.moveCamera(Data.now_position);
                                 Toast.makeText(getActivity(), "更新位置", Toast.LENGTH_SHORT).show();
                         }
                 };
+
+                new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                                Log.d("poly", "poly");
+                                ArrayList<LatLng> stat = new ArrayList<LatLng>();
+                                Method.dir(22.651108,120.312858,22.653916, 120.322504);
+                                Api.Polyline_decoder(Data.POIN, stat);
+                                Method.dir(22.653916, 120.322504, 22.630083, 120.338154);
+                                Api.Polyline_decoder(Data.POIN, stat);
+                                Method.dir(22.630083, 120.338154, 22.504033, 120.386722);
+                                Api.Polyline_decoder(Data.POIN, stat);
+                                Method.dir(22.504033, 120.386722, 22.796455, 120.457184);
+                                Api.Polyline_decoder(Data.POIN, stat);
+                                Method.dir(22.796455, 120.457184,22.651108,120.312858);
+                                Api.Polyline_decoder(Data.POIN, stat);
+
+                                LatLng location1 = new LatLng(22.653916, 120.322504);
+                                LatLng location2 = new LatLng(22.630083, 120.338154);
+                                LatLng location3 = new LatLng(22.504033, 120.386722);
+                                LatLng location4 = new LatLng(22.796455, 120.457184);
+
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                RelativeLayout icon = (RelativeLayout)view.findViewById(R.id.icon_marker_count);
+                                                mMap.addMarker(new MarkerOptions().position(location1)
+                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.convertViewToBitmap(icon))));
+                                                mMap.addMarker(new MarkerOptions().position(location2)
+                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.flashb, getContext()))));
+                                                mMap.addMarker(new MarkerOptions().position(location3)
+                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.flash, getContext()))));
+                                                mMap.addMarker(new MarkerOptions().position(location4)
+                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.flash, getContext()))));
+
+                                                PolylineOptions polylineOptions = new PolylineOptions();
+                                                for(int i=0; i< stat.size();i++){
+                                                        polylineOptions.add(stat.get(i)).width(25).color(getResources().getColor(R.color.route, null));
+                                                }
+//                        polylineOptions.color();
+                                                polylineOptions.width(9f);
+                                                if(polylineOptions.getWidth()<10) {
+                                                        polylineOptions.width(polylineOptions.getWidth() * 6);
+                                                }
+//                        polyline = mMap.addPolyline(polylineOptions);
+                                                mMap.addPolyline(polylineOptions);
+                                        }
+                                });
+
+
+                        }
+                }).start();
+
+
                 mLocationMgr = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
                 return view;
         }
@@ -129,6 +216,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                         return;
                 }
                 mMap.setMyLocationEnabled(true);
+
+
+
         mapWrapperLayout.init(mMap, getPixelsFromDp(getActivity(), 39 + 20));
         //----------------------------------------------------------------------------------------
         InfoWindowLayout infoWindowLayout = new InfoWindowLayout(getActivity(), mMap, mapWrapperLayout);

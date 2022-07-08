@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/LL"
             android:layout_alignParentBottom="true"
-            android:text="FYBR" />
+            android:text="" />
 
         <LinearLayout
             android:id="@+id/LL"

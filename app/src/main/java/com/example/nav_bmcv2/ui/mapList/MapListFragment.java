@@ -78,16 +78,16 @@ public class MapListFragment extends Fragment {
         departments.add("志吉機車行(便利換電站)");
     }
     private void create_classes_list(){
-        test_0.add("(3206)Chg_Circuit_Failed");
-        test_0.add("(3003)Charging_BackDoor_Opened");
-        test_0.add("(3012)Internet_Abnormal");
+        test_0.add("(3200)電池曹卡異物");
+        test_0.add("(3003)電池槽櫃後門被開啟");
+        test_0.add("(3012)連線異常");
         classes.add(test_0);
-        test_1.add("(3004)Internet_Abnormal");
-        test_1.add("(6104)Battery_6104");
-        test_1.add("(3201)Charger_Failed");
+        test_1.add("(3004)連線異常");
+        test_1.add("(3013)數位電錶異常");
+        test_1.add("(3202)某槽位上鎖失敗");
         classes.add(test_1);
-        test_2.add("(3002)Charging_FrontDoor_Opened");
-        test_2.add("(3201)Charger_Failed");
+        test_2.add("(3002)電池櫃前門被開啟");
+        test_2.add("(3000)AC電源異常");
         classes.add(test_2);
     }
 

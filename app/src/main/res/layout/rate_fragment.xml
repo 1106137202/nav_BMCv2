@@ -21,8 +21,8 @@
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chart"
-        android:layout_width="401dp"
-        android:layout_height="258dp"
+        android:layout_width="393dp"
+        android:layout_height="249dp"
         app:layout_constraintBottom_toTopOf="@+id/txtWeek1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

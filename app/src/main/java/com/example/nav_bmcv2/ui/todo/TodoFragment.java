@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,16 +59,17 @@ public class TodoFragment extends Fragment {
     }//onCreate
 
     private class TOdoListAdapter extends RecyclerView.Adapter<TOdoListAdapter.ViewHolder>{
-
-
         class ViewHolder extends RecyclerView.ViewHolder{
             private TextView tvId,tvAvg,tvDate;
+            private LinearLayout LLRicycleView;
+            private ImageView imageView;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 tvId = itemView.findViewById(R.id.textView_Id);
-                tvDate = itemView.findViewById(R.id.textDate);
                 tvAvg  = itemView.findViewById(R.id.textView_con);
+                LLRicycleView = itemView.findViewById(R.id.LLRicycleView);
+                imageView = itemView.findViewById(R.id.imageView);
             }
         }
         @NonNull
@@ -80,8 +83,9 @@ public class TodoFragment extends Fragment {
         @Override
         public void onBindViewHolder(TOdoListAdapter.ViewHolder holder, int position) {
             holder.tvId.setText(arrayList.get(position).get("Id"));
-            holder.tvDate.setText(arrayList.get(position).get("tvDate"));
             holder.tvAvg.setText(arrayList.get(position).get("Avg"));
+            //holder.LLRicycleView.setBackgroundColor(getResources().getColor(R.color.item_read, null));
+            //holder.imageView.setImageResource(R.drawable.read);
         }
 
         @Override

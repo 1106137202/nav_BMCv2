@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_todo, R.id.nav_undone, R.id.nav_finish, R.id.nav_total, R.id.nav_rate)
                 .setOpenableLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
@@ -68,12 +69,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
                 break;
             case  R.id.list:
-                FragmentManager fm = getSupportFragmentManager();
-                Fragment effectsFragment = fm.findFragmentById(R.id.mapList);
+                navController.navigate(R.id.nav_mapList);
+
                 break;
-
         }
-
         return super.onOptionsItemSelected(item);
     }
 

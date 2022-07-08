@@ -10,10 +10,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.nav_bmcv2.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -29,6 +32,7 @@ public class TotalFragment extends Fragment {
 
     private TotalViewModel mViewModel;
     private AppCompatButton start_date, end_date;
+    private Button query_button;
 
     public static TotalFragment newInstance() {
         return new TotalFragment();
@@ -44,10 +48,13 @@ public class TotalFragment extends Fragment {
 //        View.OnClickListener datePickerDialog;
         start_date.setOnClickListener(datePickerDialog);
         end_date.setOnClickListener(datePickerDialog);
+        query_button = view.findViewById(R.id.query_button);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         start_date.setText(simpleDateFormat.format(new Date()));
         end_date.setText(simpleDateFormat.format(new Date()));
+
+        query_button.setOnClickListener(query_buttonOnClick);
 
         return view;
     }
@@ -69,6 +76,15 @@ public class TotalFragment extends Fragment {
                     end_date.setText(simpleDateFormat.format(new Date(S)));
                 }
             });
+        }
+    };
+
+    private View.OnClickListener query_buttonOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            NavController navController = Navigation.findNavController(requireView());
+            if (!navController.popBackStack(R.id.nav_result, false))
+                navController.navigate(R.id.nav_result);
         }
     };
 }
