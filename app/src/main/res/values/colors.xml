@@ -31,6 +31,12 @@
     <color name="item">#FFFCEC</color>
     <color name="item_read">#F0F0F0</color>
 
+    <!--Map List Recycler View Color-->
+    <color name="Map_List_item_background">#C5E0B4</color>
+    <color name="Map_List_item_textcolor">#2F5597</color>
+    <color name="Map_List_subitem_background">#E2F0D9</color>
+    <color name="Map_List_subitem_textcolor">#0070C0</color>
+
     <color name="OK">#81be50</color>
     <color name="NG">#ea4848</color>
 
