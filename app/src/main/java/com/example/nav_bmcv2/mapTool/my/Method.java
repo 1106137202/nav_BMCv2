@@ -63,7 +63,7 @@ public class Method {
                 get_json(result, routes, "routes");
                 get_json(routes, overview_polyline, "overview_polyline");
                 get_json(overview_polyline, points, "points");
-                POIN = points;
+                Data.POIN = points;
                 show_json(points);
             }
         }catch (IOException e){

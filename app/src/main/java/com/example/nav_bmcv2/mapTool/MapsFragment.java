@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -24,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -77,7 +79,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
         private FusedLocationProviderClient mFusedLocationClient;
         private LocationCallback mLocationCallback;
         private LocationManager mLocationMgr;
-
+        private TextView txtNo;
+        private ImageView imgVIew;
 
         static final LatLng latlng1 = new LatLng(28.5355, 77.3910);
         static final LatLng latlng2 = new LatLng(28.6208768, 77.3726377);
@@ -95,14 +98,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                 //取得map_relative_layout
                 mapWrapperLayout = (MapWrapperLayout) view.findViewById(R.id.map_relative_layout);
 
+
                 // Obtain the SupportMapFragment and get notified when the map is ready to be used.
                 //同步mapFragment
                 SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
                 mapFragment.getMapAsync(this);
 
                 LayoutInflater factory = LayoutInflater.from(getContext());
-                View myView = factory.inflate(R.layout.icon_marker_count, null);
-
+//                View myView = factory.inflate(R.layout.icon_marker_count, null);
+//                txtNo = myView.findViewById(R.id.txtNo);
                 new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -131,7 +135,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                                                 Api.punchInPoint(Data.now.get(Data.now.size()-1).latitude, Data.now.get(Data.now.size()-1).longitude);
                                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                                         public void run() {
-                                                                View icon_marker = (View)view.findViewById(R.id.icon_marker_count);
 //                                                                mMap.addMarker(new MarkerOptions().position(Data.now.get(Data.now.size()-1)).title("目前")
 //                                                                        // below line is use to add custom marker on our map.
 //                                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.getViewBitmap(icon_marker))));
@@ -177,30 +180,49 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                                 LatLng location4 = new LatLng(22.796455, 120.457184);
 
                                 ArrayList<LatLng> loctionArray = new ArrayList<>();
+                                loctionArray.add(location1);
+                                loctionArray.add(location2);
+                                loctionArray.add(location3);
+                                loctionArray.add(location4);
+
+                                int number = 1;
+                                ArrayList<Bitmap> icon = new ArrayList<>();
+
+                                for (int n = 0; n<loctionArray.size(); n++){
+                                        View myView = (View) factory.inflate(R.layout.icon_marker_count, null);
+                                        txtNo = myView.findViewById(R.id.txtNo);
+                                        System.out.println(number);
+                                        txtNo.setText(Integer.toString(number));
+                                        //icon.add(Method.convertViewToBitmap(txtNo, 5));
+                                        Bitmap b = Method.convertViewToBitmap(myView, 5);
+                                        icon.add(Method.convertViewToBitmap(myView, 5));
+                                        int finalN = n;
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                        mMap.addMarker(new MarkerOptions().position(loctionArray.get(finalN))
+                                                                .icon(BitmapDescriptorFactory.fromBitmap(b)));
+                                                }
+                                        });
+                                        number++;
+                                }
 
 
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                                mMap.addMarker(new MarkerOptions().position(location1)
-                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.convertViewToBitmap(myView, 8))));
-                                                mMap.addMarker(new MarkerOptions().position(location2)
-                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.flashb, getContext()))));
-                                                mMap.addMarker(new MarkerOptions().position(location3)
-                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.flash, getContext()))));
-                                                mMap.addMarker(new MarkerOptions().position(location4)
-                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.flash, getContext()))));
 
                                                 PolylineOptions polylineOptions = new PolylineOptions();
+                                                System.out.println(stat);
                                                 for(int i=0; i< stat.size();i++){
                                                         polylineOptions.add(stat.get(i)).width(25).color(getResources().getColor(R.color.route, null));
                                                 }
-//                        polylineOptions.color();
+
                                                 polylineOptions.width(9f);
                                                 if(polylineOptions.getWidth()<10) {
-                                                        polylineOptions.width(polylineOptions.getWidth() * 6);
+                                                        polylineOptions.width(polylineOptions.getWidth() * 3);
                                                 }
-//                        polyline = mMap.addPolyline(polylineOptions);
+
                                                 mMap.addPolyline(polylineOptions);
                                         }
                                 });
