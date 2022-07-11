@@ -6,6 +6,6 @@
         android:id="@+id/list"
         android:orderInCategory="100"
         android:title="清單"
-        app:showAsAction="never"/>
+        app:showAsAction="always"/>
 
 </menu>

@@ -2,16 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-
+    android:background="@color/Map_List_item_background"
     android:orientation="vertical"
     android:id="@+id/LLRicycleView"
-    android:tag="1">
+    android:tag="1"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/Map_List_item_background"
-        android:layout_margin="10dp"
         android:orientation="horizontal">
         <ImageView
             android:id="@+id/imageView"
@@ -22,22 +21,22 @@
             android:scaleType="fitXY"
             android:layout_gravity="center"
             android:paddingLeft="5dp"/>
-
-
                 <TextView
                     android:id="@+id/textView_Station_Name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="機車行名稱"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textColor="@color/Map_List_item_textcolor"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:textStyle="bold" />
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleviewsubitem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="30dp"
+
+        android:background="@color/Map_List_subitem_background"
         android:visibility="gone"/>
 </LinearLayout>

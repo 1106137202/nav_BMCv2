@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/Map_List_subitem_background"
-    android:layout_margin="10dp"
-    android:id="@+id/LLRicycleView"
+    android:id="@+id/LLRicycleViewSubItem"
     android:orientation="horizontal">
 
     <TextView
@@ -15,14 +15,22 @@
         android:textSize="18sp"
         android:textColor="@color/Map_List_subitem_textcolor"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:layout_gravity="center" />
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_margin="10dp"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:src="@drawable/check_2"
-        android:scaleType="fitXY"
-        android:layout_gravity="right|center_vertical"/>
+        android:layout_gravity="center"
+        android:layout_marginLeft="80dp"/>
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Map_List_subitem_background"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_margin="10dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/check_2"
+            android:scaleType="fitXY"
+            android:layout_gravity="right|center_vertical"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
 </LinearLayout>
