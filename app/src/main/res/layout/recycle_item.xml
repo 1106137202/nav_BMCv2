@@ -6,6 +6,10 @@
     android:background="@color/item"
     android:orientation="horizontal"
     android:id="@+id/LLRicycleView">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="55dp"
@@ -62,11 +66,36 @@
                     android:layout_weight="8"
                     android:paddingStart="10dp"
                     android:paddingBottom="20dp"
-                    android:text="DP2112210004 4 異常維修(4能源站、8個異常、總里程17.15公里、總移動時間4.76小時"
+                    android:text="DP2112210004 4 異常維修"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textSize="18sp" />
             </LinearLayout>
 
+        </LinearLayout>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:background="#D1BA74">
+            <TextView
+                android:id="@+id/tv_msg_remind_check"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="標記已讀"
+                android:textColor="@color/white" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@color/red_GINSYU">
+            <TextView
+                android:id="@+id/tv_msg_remind_delete"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="刪除"/>
         </LinearLayout>
 
 </LinearLayout>

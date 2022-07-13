@@ -10,7 +10,8 @@
         android:paddingLeft="10dip"
         android:paddingTop="5dip"
         android:paddingRight="10dip"
-        android:paddingBottom="5dip">
+        android:paddingBottom="5dip"
+        android:id="@+id/LLinfowindow">
 
         <LinearLayout
             android:layout_width="wrap_content"
