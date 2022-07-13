@@ -4,12 +4,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.icu.text.IDNA;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.example.nav_bmcv2.mapTool.MapWrapperLayout;
 import com.example.nav_bmcv2.mapTool.MapsFragment;
@@ -25,6 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.Date;
 
 public class InfoWindowLayout {
+    private ImageView imgView;
     private Context context;
     private GoogleMap mMap;
     private ViewGroup infoWindow;
@@ -43,13 +51,15 @@ public class InfoWindowLayout {
         cancel = (Button)infoWindow.findViewById(R.id.cancel);
         confirm = (Button)infoWindow.findViewById(R.id.confirm);
 
+        LayoutInflater change = LayoutInflater.from(infoWindow.getContext());
+        imgView = infoWindow.findViewById(R.id.imgView);
+
         //cancel
         cancelListener = new OnInfoWindowElemTouchListener(cancel){
             @Override
             protected void onClickConfirmed(View v, Marker marker) {
                 //todo
-
-//                Toast.makeText(context, "cancel", Toast.LENGTH_SHORT).show();
+                marker.hideInfoWindow();
             }
         };
         //cancel事件加入
@@ -65,12 +75,16 @@ public class InfoWindowLayout {
                 builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-//                                marker.remove();
-                                System.out.println(marker.getId());
-                                marker.remove();
-                                mMap.addMarker(new MarkerOptions().position(Data.now_position).title("目前")
-                                        // below line is use to add custom marker on our map.
-                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.flashb, context))));
+                                LayoutInflater factory = LayoutInflater.from(context);
+                                View myView = (View) factory.inflate(R.layout.icon_marker_count, null);
+                                ImageView imgView = myView.findViewById(R.id.imgView);
+                                imgView.setImageResource(R.drawable.marker);
+                                TextView txtNo = myView.findViewById(R.id.txtNo);
+                                String tag = Integer.toString((int)marker.getTag());
+                                txtNo.setText(tag);
+                                Bitmap b = Method.convertViewToBitmap(myView, 5);
+                                marker.setIcon(BitmapDescriptorFactory.fromBitmap(b));
+                                marker.hideInfoWindow();
                             }
                         });
                 builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -80,9 +94,6 @@ public class InfoWindowLayout {
                     }
                 });
                 builder.show();
-
-                //todo
-//                Toast.makeText(context, "confirm", Toast.LENGTH_SHORT).show();
             }
         };
         //confirm事件加入

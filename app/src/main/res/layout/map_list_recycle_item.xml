@@ -5,7 +5,9 @@
     android:background="@color/Map_List_item_background"
     android:orientation="vertical"
     android:id="@+id/LLRicycleView"
+    android:layout_marginTop="10dp"
     android:tag="1"
+
     android:layout_marginLeft="15dp"
     android:layout_marginRight="15dp">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,8 +17,8 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_margin="10dp"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/charging_1"
             android:scaleType="fitXY"
             android:layout_gravity="center"
@@ -26,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="機車行名稱"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textColor="@color/Map_List_item_textcolor"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:layout_gravity="center"

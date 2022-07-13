@@ -202,6 +202,7 @@ public class Api {
                 ArrayList<String> latitude = new ArrayList<>();
                 ArrayList<String> longitude = new ArrayList<>();
                 Method.get_json(result, snappedPoints, "snappedPoints");
+                Method.show_json(snappedPoints);
                 Method.get_json(snappedPoints, location, "location");
                 Method.get_json(location, latitude, "latitude");
                 Method.get_json(location, longitude, "longitude");

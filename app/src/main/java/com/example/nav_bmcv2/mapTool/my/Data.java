@@ -29,6 +29,7 @@ public class Data {
     public static ArrayList<String> POIN = new ArrayList<String>();
     public static String[] attr = {"OK", "NG"};
     public static ArrayList<LatLng> now = new ArrayList<>();
+    public static ArrayList<LatLng> loctionArray = new ArrayList<>();
 
     public static LatLng now_position;
 

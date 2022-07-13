@@ -36,7 +36,7 @@ import com.example.nav_bmcv2.mapTool.my.Data;
 import com.example.nav_bmcv2.mapTool.my.InfoWindowLayout;
 import com.example.nav_bmcv2.mapTool.my.Method;
 import com.example.nav_bmcv2.R;
-import com.example.nav_bmcv2.databinding.FragmentFinishBinding;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -50,7 +50,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,11 +62,12 @@ import java.util.Date;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener,
+        GoogleMap.CancelableCallback{
 
         private GoogleMap mMap;
 //        private FragmentFinishBinding binding;
-        private FragmentFinishBinding binding;
+
 
         private ViewGroup infoWindow;
         private TextView stationName, stationAddr, stationLatLng, nowAttr, attrText1, attr1, attrText2, attr2, attrText3, attr3, memoText, now, nowAddr, nowLatLng;
@@ -86,6 +89,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
         static final LatLng latlng2 = new LatLng(28.6208768, 77.3726377);
 
         private InfoWindowLayout infoWindowLayout;
+        
+        private Marker station_Marker;
 
         @RequiresApi(api = Build.VERSION_CODES.S)
         @Override
@@ -138,6 +143,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
 //                                                                mMap.addMarker(new MarkerOptions().position(Data.now.get(Data.now.size()-1)).title("目前")
 //                                                                        // below line is use to add custom marker on our map.
 //                                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.getViewBitmap(icon_marker))));
+
                                                                 mMap.addMarker(new MarkerOptions().position(Data.now.get(Data.now.size()-1)).title("目前")
                                                                         // below line is use to add custom marker on our map.
                                                                         .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.person, getActivity()))));
@@ -179,16 +185,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                                 LatLng location3 = new LatLng(22.504033, 120.386722);
                                 LatLng location4 = new LatLng(22.796455, 120.457184);
 
-                                ArrayList<LatLng> loctionArray = new ArrayList<>();
-                                loctionArray.add(location1);
-                                loctionArray.add(location2);
-                                loctionArray.add(location3);
-                                loctionArray.add(location4);
+                                Data.loctionArray.add(location1);
+                                Data.loctionArray.add(location2);
+                                Data.loctionArray.add(location3);
+                                Data.loctionArray.add(location4);
 
                                 int number = 1;
                                 ArrayList<Bitmap> icon = new ArrayList<>();
 
-                                for (int n = 0; n<loctionArray.size(); n++){
+                                for (int n = 0; n<Data.loctionArray.size(); n++){
                                         View myView = (View) factory.inflate(R.layout.icon_marker_count, null);
                                         txtNo = myView.findViewById(R.id.txtNo);
                                         System.out.println(number);
@@ -197,41 +202,35 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                                         Bitmap b = Method.convertViewToBitmap(myView, 5);
                                         icon.add(Method.convertViewToBitmap(myView, 5));
                                         int finalN = n;
+                                        int finalNumber = number;
                                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                        mMap.addMarker(new MarkerOptions().position(loctionArray.get(finalN))
+                                                        station_Marker = mMap.addMarker(new MarkerOptions().position(Data.loctionArray.get(finalN))
                                                                 .icon(BitmapDescriptorFactory.fromBitmap(b)));
+                                                        station_Marker.setTag(finalNumber);
                                                 }
                                         });
                                         number++;
                                 }
 
-
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-
                                                 PolylineOptions polylineOptions = new PolylineOptions();
                                                 System.out.println(stat);
                                                 for(int i=0; i< stat.size();i++){
                                                         polylineOptions.add(stat.get(i)).width(25).color(getResources().getColor(R.color.route, null));
                                                 }
-
                                                 polylineOptions.width(9f);
                                                 if(polylineOptions.getWidth()<10) {
                                                         polylineOptions.width(polylineOptions.getWidth() * 3);
                                                 }
-
                                                 mMap.addPolyline(polylineOptions);
                                         }
                                 });
-
-
                         }
                 }).start();
-
-
                 mLocationMgr = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
                 return view;
         }
@@ -244,8 +243,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                 }
                 mMap.setMyLocationEnabled(true);
 
-
-
         mapWrapperLayout.init(mMap, getPixelsFromDp(getActivity(), 39 + 20));
         //----------------------------------------------------------------------------------------
         InfoWindowLayout infoWindowLayout = new InfoWindowLayout(getActivity(), mMap, mapWrapperLayout);
@@ -256,6 +253,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
 //                .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.person, getActivity()))));
 //
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Data.now_position, 20));
+                mMap.setOnMarkerClickListener(this);
 
         }
 
@@ -276,17 +274,17 @@ private void enableLocation(boolean on) {
         altDlgBuilder.setCancelable(false);
         altDlgBuilder.setPositiveButton("確定",
         new DialogInterface.OnClickListener() {
-@Override
-public void onClick(DialogInterface dialogInterface,
-        int i) {
-        // 顯示詢問使用者是否同意功能權限的對話盒
-        // 使用者答覆後會執行onRequestPermissionsResult()
-        ActivityCompat.requestPermissions(getActivity(),
-        new String[]{
-        android.Manifest.permission.ACCESS_FINE_LOCATION},
-        REQUEST_PERMISSION_FOR_ACCESS_FINE_LOCATION);
-        }
-        });
+        @Override
+        public void onClick(DialogInterface dialogInterface,int i) {
+
+                // 顯示詢問使用者是否同意功能權限的對話盒
+                // 使用者答覆後會執行onRequestPermissionsResult()
+                ActivityCompat.requestPermissions(getActivity(),
+                new String[]{
+                android.Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_PERMISSION_FOR_ACCESS_FINE_LOCATION);
+             }
+            });
         altDlgBuilder.show();
 
         return;
@@ -309,7 +307,7 @@ public void onClick(DialogInterface dialogInterface,
 @Override
 public void onSuccess(Location location) {
         if (location!=null) {
-        Toast.makeText(getActivity(), "成功取得上一次定位", Toast.LENGTH_LONG).show();
+//        Toast.makeText(getActivity(), "成功取得上一次定位", Toast.LENGTH_LONG).show();
         //取得上次定位點，並初始化zoom
         LatLng last = new LatLng(location.getLatitude(), location.getLongitude());
         Data.now_position = last;
@@ -334,13 +332,11 @@ public void onSuccess(Location location) {
         if (mLocationMgr.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
         locationRequest.setPriority(
         LocationRequest.PRIORITY_HIGH_ACCURACY);
-        Toast.makeText(getActivity(), "使用GPS定位",
-        Toast.LENGTH_LONG).show();
+//        Toast.makeText(getActivity(), "使用GPS定位",Toast.LENGTH_LONG).show();
         } else if (mLocationMgr.isProviderEnabled(
         LocationManager.NETWORK_PROVIDER)) {
         locationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
-        Toast.makeText(getActivity(), "使用網路定位",
-        Toast.LENGTH_LONG).show();
+//        Toast.makeText(getActivity(), "使用網路定位", Toast.LENGTH_LONG).show();
         }
 
         // 啟動定位功能
@@ -349,8 +345,7 @@ public void onSuccess(Location location) {
         } else {
         // 停止定位功能
         mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-        Toast.makeText(getActivity(), "停止定位", Toast.LENGTH_LONG)
-        .show();
+//        Toast.makeText(getActivity(), "停止定位", Toast.LENGTH_LONG).show();
         }
         }
 @Override
@@ -419,4 +414,28 @@ final float scale = context.getResources().getDisplayMetrics().density;
         }
 
 
+        @Override
+        public boolean onMarkerClick(@NonNull Marker marker) {
+                mMap.stopAnimation();
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(Data.now_position)      // Sets the center of the map to Mountain View
+                        .zoom(mMap.getCameraPosition().zoom)                   // Sets the zoom
+                        .bearing(mMap.getCameraPosition().bearing)                // Sets the orientation of the camera to east
+                        .tilt(mMap.getCameraPosition().tilt)                   // Sets the tilt of the camera to 30 degrees
+                        .build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, this);
+
+                return false;
+        }
+
+        @Override
+        public void onCancel() {
+
+        }
+
+        @Override
+        public void onFinish() {
+                System.out.println("FYBR");
+                mMap.animateCamera(CameraUpdateFactory.scrollBy(0, -50));
+        }
 }
