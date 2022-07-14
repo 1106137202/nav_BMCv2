@@ -1,6 +1,7 @@
 package com.example.nav_bmcv2;
 
 import android.os.Bundle;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -9,9 +10,12 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -25,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private NavController navController;
+
+    private Menu main_menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +58,40 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        main_menu = menu;
+        MenuItem item = menu.findItem(R.id.list);
+        item.setVisible(false);
+
+        //建立監聽事件，當切換頁面的時候，navDestination為載入的頁面，即可使用getID()取得頁面的R.id.xxxxxx
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+                int page_id = navDestination.getId();
+                MenuItem setting = main_menu.findItem(R.id.setting);
+                MenuItem list = main_menu.findItem(R.id.list);
+                switch(page_id){
+                    case R.id.nav_map:
+                        setting.setVisible(false);
+                        list.setVisible(true);
+                        return;
+                    case R.id.nav_finish:
+                        setting.setVisible(true);
+                        list.setVisible(false);
+                        return;
+                }
+            }
+        });
+
         return true;
     }
 

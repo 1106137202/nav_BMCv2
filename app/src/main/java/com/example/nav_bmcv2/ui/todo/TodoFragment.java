@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.nav_bmcv2.R;
 
 import com.example.nav_bmcv2.databinding.FragmentTodoBinding;
+import com.example.nav_bmcv2.ui.ItemSlideHelper;
 import com.example.nav_bmcv2.ui.finish.FinishFragment;
 import com.example.nav_bmcv2.ui.undone.UndoneFragment;
 
@@ -58,11 +59,13 @@ public class TodoFragment extends Fragment {
         return view;
     }//onCreate
 
-    private class TOdoListAdapter extends RecyclerView.Adapter<TOdoListAdapter.ViewHolder>{
+    private class TOdoListAdapter extends RecyclerView.Adapter<TOdoListAdapter.ViewHolder> implements ItemSlideHelper.Callback{
         class ViewHolder extends RecyclerView.ViewHolder{
             private TextView tvId,tvAvg,tvDate;
             private LinearLayout LLRicycleView;
             private ImageView imageView;
+            private TextView tv_msg_remind_delete;
+            private  TextView tv_msg_remind_check;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -70,7 +73,15 @@ public class TodoFragment extends Fragment {
                 tvAvg  = itemView.findViewById(R.id.textView_con);
                 LLRicycleView = itemView.findViewById(R.id.LLRicycleView);
                 imageView = itemView.findViewById(R.id.imageView);
+                tv_msg_remind_delete = itemView.findViewById(R.id.tv_msg_remind_delete);
+                tv_msg_remind_check  = itemView.findViewById(R.id.tv_msg_remind_check);
             }
+        }
+        @Override
+        public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+            super.onAttachedToRecyclerView(recyclerView);
+            mRecyclerView = recyclerView;
+            mRecyclerView.addOnItemTouchListener(new ItemSlideHelper(mRecyclerView.getContext(), this));
         }
         @NonNull
         @Override
@@ -86,11 +97,48 @@ public class TodoFragment extends Fragment {
             holder.tvAvg.setText(arrayList.get(position).get("Avg"));
             //holder.LLRicycleView.setBackgroundColor(getResources().getColor(R.color.item_read, null));
             //holder.imageView.setImageResource(R.drawable.read);
+            holder.tv_msg_remind_check.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    holder.LLRicycleView.setBackgroundColor(getContext().getResources().getColor(R.color.item_read));
+                    holder.imageView.setImageResource(R.drawable.read);
+                    notifyItemChanged(holder.getAdapterPosition());
+                }
+            });
+            holder.tv_msg_remind_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    removeData(holder.getAdapterPosition());
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
             return arrayList.size();
+        }
+        @Override
+        public int getHorizontalRange(RecyclerView.ViewHolder holder) {
+            if (holder.itemView instanceof LinearLayout) {
+                ViewGroup viewGroup = (ViewGroup) holder.itemView;
+                //viewGroup包含3個控制元件,即訊息主item、標記已讀、刪除,返回為標記已讀寬度+刪除寬度
+                return viewGroup.getChildAt(1).getLayoutParams().width  + viewGroup.getChildAt(2).getLayoutParams().width;
+            }
+            return 0;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder getChildViewHolder(View childView) {
+            return mRecyclerView.getChildViewHolder(childView);
+        }
+
+        @Override
+        public View findTargetView(float x, float y) {
+            return mRecyclerView.findChildViewUnder(x, y);
+        }
+        public void removeData(int position) {
+            arrayList.remove(position);
+            notifyItemRemoved(position);
         }
     }
 }

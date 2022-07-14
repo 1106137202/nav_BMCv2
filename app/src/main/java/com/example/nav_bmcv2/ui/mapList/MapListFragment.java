@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -83,11 +84,13 @@ public class MapListFragment extends Fragment {
             private TextView textView_Station_Name;
             private LinearLayout LLRicycleView;
             private RecyclerView recycleviewsubitem;
+            private ImageView expand;
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 textView_Station_Name = itemView.findViewById(R.id.textView_Station_Name);
                 LLRicycleView         = itemView.findViewById(R.id.LLRicycleView);
                 recycleviewsubitem    = itemView.findViewById(R.id.recycleviewsubitem);
+                expand                = itemView.findViewById(R.id.expand);
             }
         }
         @NonNull
@@ -120,10 +123,12 @@ public class MapListFragment extends Fragment {
                     //當flag為1時,顯示子RecyclerView。否則,隱藏子RecyclerView。
                     if (flag == 1) {
                         holder.recycleviewsubitem.setVisibility(View.VISIBLE);
+                        holder.expand.setImageResource(R.drawable.expand_on);
                         holder.recycleviewsubitem.setTag(101);
                         holder.LLRicycleView.setTag("2");
                     } else {
                         holder.recycleviewsubitem.setVisibility(View.GONE);
+                        holder.expand.setImageResource(R.drawable.expand_off);
                         holder.LLRicycleView.setTag("1");
                     }
                 }
