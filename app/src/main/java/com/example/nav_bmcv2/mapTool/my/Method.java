@@ -129,7 +129,7 @@ public class Method {
     public static Bitmap bitmap(int icon, Context context){
         int height = 100;
         int width = 100;
-        BitmapDrawable bitmapdraw = (BitmapDrawable) ContextCompat.getDrawable(context, icon);;
+        BitmapDrawable bitmapdraw = (BitmapDrawable) ContextCompat.getDrawable(context, icon);
         Bitmap b = bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
         return smallMarker;

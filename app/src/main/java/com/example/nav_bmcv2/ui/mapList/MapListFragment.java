@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.bluetooth.le.ScanSettings;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,15 +23,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nav_bmcv2.R;
 import com.example.nav_bmcv2.databinding.FragmentMapsBinding;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -43,9 +49,14 @@ public class MapListFragment extends Fragment {
     private ArrayList<HashMap<String,String>> tmp2 = new ArrayList<>();
     private ArrayList<ArrayList<HashMap<String,String>>> question = new ArrayList<>();
 
+    private final String[] items = {"待解析", "待料/待工", "其他"};
+    private final ArrayList<String> itemSelect = new ArrayList<>();
+    private int itemNo = 1;
+
     private RecyclerView mainRecyclerView;
     private MainListAdapter mainListAdapter;
 
+    private TextView subMemo;
 
     ArrayList<ArrayList<String>> classes = new ArrayList<ArrayList<String >>();
 
@@ -85,12 +96,16 @@ public class MapListFragment extends Fragment {
             private LinearLayout LLRicycleView;
             private RecyclerView recycleviewsubitem;
             private ImageView expand;
+
+
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 textView_Station_Name = itemView.findViewById(R.id.textView_Station_Name);
                 LLRicycleView         = itemView.findViewById(R.id.LLRicycleView);
                 recycleviewsubitem    = itemView.findViewById(R.id.recycleviewsubitem);
                 expand                = itemView.findViewById(R.id.expand);
+
+
             }
         }
         @NonNull
@@ -147,14 +162,21 @@ public class MapListFragment extends Fragment {
             item_position = position;
         }
         private class SubViewHolder extends RecyclerView.ViewHolder{
+            public TextView subMemo;
             private TextView textView_Error_Question;
             private LinearLayout LLRicycleViewSubItem;
+            private ImageButton edit;
+//            private TextView subMemo;
+
             public SubViewHolder(@NonNull View itemView) {
                 super(itemView);
                 //itemView.setBackgroundColor(getResources().getColor(R.color.Map_List_subitem_background));
                 //設定View
                 textView_Error_Question = itemView.findViewById(R.id.textView_Error_Question);
                 LLRicycleViewSubItem    = itemView.findViewById(R.id.LLRicycleViewSubItem);
+                edit = itemView.findViewById(R.id.edit);
+                subMemo = itemView.findViewById(R.id.subMemo);
+
             }
         }
         @NonNull
@@ -164,7 +186,8 @@ public class MapListFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull SubViewAdapter.SubViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull SubViewAdapter.SubViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
             //取得顯示的文字
             holder.textView_Error_Question.setText(question.get(item_position).get(position).get("Question"));
             holder.LLRicycleViewSubItem.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +195,47 @@ public class MapListFragment extends Fragment {
                 public void onClick(View view) {
                     //子項目點擊事件
                     System.out.println("FYBR");
+                }
+            });
+            holder.edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("備註：");
+                    builder.setSingleChoiceItems(items, itemNo, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+                            switch (which){
+                                case 0:
+                                    itemNo = which;
+                                    itemSelect.add(items[which]);
+                                    Toast.makeText(getContext(), items[which], Toast.LENGTH_SHORT).show();
+                                case 1:
+                                    itemNo = which;
+                                    itemSelect.add(items[which]);
+                                    Toast.makeText(getContext(), items[which], Toast.LENGTH_SHORT).show();
+                                case 2:
+                                    itemNo = which;
+                                    itemSelect.add(items[which]);
+                                    Toast.makeText(getContext(), items[which], Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    builder.setPositiveButton("提交", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            holder.subMemo.setText(itemSelect.get(position));
+
+                            Toast.makeText(getContext(), "提交成功", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.show();
                 }
             });
         }

@@ -7,11 +7,13 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.icu.text.IDNA;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class InfoWindowLayout {
@@ -38,8 +41,12 @@ public class InfoWindowLayout {
     private ViewGroup infoWindow;
     private Button cancel;
     private Button confirm;
-    private OnInfoWindowElemTouchListener cancelListener, confirmListener;
+    private OnInfoWindowElemTouchListener cancelListener, confirmListener, imageButtonListener;
     private MapWrapperLayout mapWrapperLayout;
+    private ImageButton imageButton;
+    private final String[] items = {"待解析", "待料/待工", "其他"};
+    private final ArrayList<Integer> itemSelect = new ArrayList<>();
+
     public InfoWindowLayout(Context con, GoogleMap map, MapWrapperLayout WrapperLayout){
         context = con;
         mMap = map;
@@ -98,6 +105,37 @@ public class InfoWindowLayout {
         };
         //confirm事件加入
         confirm.setOnTouchListener(confirmListener);
+
+        imageButtonListener = new OnInfoWindowElemTouchListener(imageButton){
+            @Override
+            protected void onClickImageButton(View v, Marker marker){
+                AlertDialog.Builder build = new AlertDialog.Builder(context);
+                build.setTitle("請選擇您要備註的項目");
+                build.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int selectedItemId, boolean isSelected) {
+                        if (isSelected) {
+                            itemSelect.add(selectedItemId);
+                        } else if (itemSelect.contains(selectedItemId)) {
+                            itemSelect.remove(Integer.valueOf(selectedItemId));
+                        }
+                    }
+                });
+                build.setPositiveButton("提交", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(context, "提交成功", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                build.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                build.show();
+            }
+        };
         System.out.println("FYBR1");
         //設定googlemap中的WindowsAdapter所取得的文字對應
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {

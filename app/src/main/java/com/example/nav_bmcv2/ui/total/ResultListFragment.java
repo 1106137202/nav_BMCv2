@@ -113,7 +113,7 @@ public class ResultListFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return 0;
+            return arrayList.size();
         }
 
 

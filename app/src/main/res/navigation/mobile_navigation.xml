@@ -55,5 +55,12 @@
         tools:layout="@layout/result_list_fragment"
         />
 
+    <fragment
+        android:id="@+id/nav_announcement"
+        android:name="com.example.nav_bmcv2.ui.announcement.AnnouncementFragment"
+        android:label="佈告欄"
+        tools:layout="@layout/announcement_fragment"
+        />
+
 
 </navigation>

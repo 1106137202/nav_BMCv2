@@ -36,6 +36,7 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
 
                 // We need to delay releasing of the view a little so it shows the pressed state on the screen
                 case MotionEvent.ACTION_UP: handler.postDelayed(confirmClickRunnable, 150); break;
+
                 case MotionEvent.ACTION_CANCEL: endPress(); break;
                 default: break;
             }
@@ -52,6 +53,7 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
     private void startPress() {
         if (!pressed) {
             pressed = true;
+            handler.removeCallbacks(imageButtonRunnable);
             handler.removeCallbacks(confirmClickRunnable);
             //view.setBackground(bgDrawablePressed);
             if (marker != null)
@@ -62,6 +64,7 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
     private boolean endPress() {
         if (pressed) {
             this.pressed = false;
+            handler.removeCallbacks(imageButtonRunnable);
             handler.removeCallbacks(confirmClickRunnable);
             //view.setBackground(bgDrawableNormal);
             if (marker != null)
@@ -80,9 +83,22 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
         }
     };
 
+    private final Runnable imageButtonRunnable = new Runnable() {
+        @Override
+        public void run() {
+             if (endPress()){
+                 onClickImageButton(view, marker);
+             }
+        }
+    };
+
     /**
      * This is called after a successful click
      */
+    protected void onClickImageButton(View v, Marker marker){
+
+    }
+
     protected void onClickConfirmed(View v, Marker marker) {
 
     }

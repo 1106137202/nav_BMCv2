@@ -1,6 +1,16 @@
-package com.example.nav_bmcv2.ui.todo;
+package com.example.nav_bmcv2.ui.announcement;
+
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,58 +18,48 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.nav_bmcv2.R;
-
-import com.example.nav_bmcv2.databinding.FragmentTodoBinding;
 import com.example.nav_bmcv2.ui.ItemSlideHelper;
-import com.example.nav_bmcv2.ui.finish.FinishFragment;
-import com.example.nav_bmcv2.ui.undone.UndoneFragment;
+import com.example.nav_bmcv2.ui.todo.TodoFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
-public class TodoFragment extends Fragment {
+public class AnnouncementFragment extends Fragment {
 
-    private TodoViewModel homeViewModel;
-    private FragmentTodoBinding binding;
     private RecyclerView mRecyclerView;
-    private TOdoListAdapter TOdoListAdapter;
-    private ArrayList<HashMap<String,String>> arrayList = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
+    private AnnListAdapter AnnListAdapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(TodoViewModel.class);
+    private AnnouncementViewModel mViewModel;
 
-        binding = FragmentTodoBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-        View view = inflater.inflate(R.layout.fragment_todo, container, false);
-        for (int i = 0;i<10;i++){
-            HashMap<String,String> hashMap = new HashMap<>();
-            hashMap.put("Id",String.format("派工單",i+1));
-            hashMap.put("Avg",String.format("DP2112210004 異常維修(4能源站、8個異常、總里程17.15公里、總移動時間4.76小時",i+1));
+    public static AnnouncementFragment newInstance() {
+        return new AnnouncementFragment();
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.announcement_fragment, container, false);
+        for (int i = 0; i < 10; i++) {
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("Id", String.format("技術通報", i + 1));
+            hashMap.put("Avg", String.format("馬達問題解決方法", i + 1));
 
             arrayList.add(hashMap);
         }
         //設置RecycleView
-        mRecyclerView = view.findViewById(R.id.recycleviewT);
+        mRecyclerView = view.findViewById(R.id.recycleviewA);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        TOdoListAdapter = new TOdoListAdapter();
-        mRecyclerView.setAdapter(TOdoListAdapter);
+        AnnListAdapter = new AnnListAdapter();
+        mRecyclerView.setAdapter(AnnListAdapter);
 
         return view;
-    }//onCreate
+    }
 
-    private class TOdoListAdapter extends RecyclerView.Adapter<TOdoListAdapter.ViewHolder> implements ItemSlideHelper.Callback{
+    private class AnnListAdapter extends RecyclerView.Adapter<AnnListAdapter.ViewHolder> implements ItemSlideHelper.Callback{
         class ViewHolder extends RecyclerView.ViewHolder{
             private TextView tvId,tvAvg,tvDate;
             private LinearLayout LLRicycleView;
@@ -85,14 +85,14 @@ public class TodoFragment extends Fragment {
         }
         @NonNull
         @Override
-        public TOdoListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public AnnListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycle_item,parent,false);
-            return new TOdoListAdapter.ViewHolder(view);
+            return new AnnListAdapter.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(TOdoListAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(AnnListAdapter.ViewHolder holder, int position) {
             holder.tvId.setText(arrayList.get(position).get("Id"));
             holder.tvAvg.setText(arrayList.get(position).get("Avg"));
             //holder.LLRicycleView.setBackgroundColor(getResources().getColor(R.color.item_read, null));
@@ -100,7 +100,7 @@ public class TodoFragment extends Fragment {
             holder.tv_msg_remind_check.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    holder.LLRicycleView.setBackgroundColor(getContext().getResources().getColor(R.color.item_read, null));
+                    holder.LLRicycleView.setBackgroundColor(getContext().getResources().getColor(R.color.item_read));
                     holder.imageView.setImageResource(R.drawable.read);
                     //notifyItemChanged(holder.getAdapterPosition());
                 }

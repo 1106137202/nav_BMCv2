@@ -142,6 +142,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                                 LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
                                 Data.now_position = point;
                                 initCamera(Data.now_position);
+                                Bitmap b = Method.bitmap(R.drawable.pin, getContext());
                                 new Thread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -155,7 +156,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
 
                                                                 mMap.addMarker(new MarkerOptions().position(Data.now.get(Data.now.size()-1)).title("目前")
                                                                         // below line is use to add custom marker on our map.
-                                                                        .icon(BitmapDescriptorFactory.fromBitmap(Method.bitmap(R.drawable.person, getActivity()))));
+                                                                        .icon(BitmapDescriptorFactory.fromBitmap(b)));
                                                         }
                                                 });
                                         }
@@ -437,7 +438,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                                         txtNo = myView.findViewById(R.id.txtNo);
                                         System.out.println(number);
                                         txtNo.setText(Integer.toString(number));
-                                        //icon.add(Method.convertViewToBitmap(txtNo, 5));
                                         Bitmap b = Method.convertViewToBitmap(myView, 5);
                                         icon.add(Method.convertViewToBitmap(myView, 5));
                                         int finalN = n;
@@ -459,6 +459,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                                                 PolylineOptions polylineOptions = new PolylineOptions();
                                                 System.out.println(stat);
                                                 for(int i=0; i< stat.size();i++){
+                                                        //檢測Fragment是否與Activity綁定
+                                                        if (isAdded())
                                                         polylineOptions.add(stat.get(i)).width(25).color(getResources().getColor(R.color.route, null));
                                                 }
                                                 polylineOptions.width(9f);

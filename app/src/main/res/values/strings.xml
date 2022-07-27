@@ -41,13 +41,24 @@
 
     <string-array name="attr">
         <item>全部</item>
-        <item>已進行</item>
-        <item>未進行</item>
+        <item>已進行(已讀)</item>
+        <item>未進行(未讀)</item>
     </string-array>
 
     <string-array name="type">
         <item>全部</item>
+        <item>派工單</item>
         <item>公告事項</item>
         <item>技術通報</item>
     </string-array>
+
+    <string-array name="userId">
+        <item>1111</item>
+        <item>2222</item>
+        <item>3333</item>
+    </string-array>
+
+    <string name="prompt_account">Account</string>
+    <string name="prompt_password">Password</string>
+    <string name="signin_activity_login">Login</string>
 </resources>
