@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
+
 import com.google.android.gms.maps.model.Marker;
 
 public class OnInfoWindowElemTouchListener implements OnTouchListener {
@@ -15,6 +17,8 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
 
     private Marker marker;
     private boolean pressed = false;
+
+
 
     public OnInfoWindowElemTouchListener(View view) {
         this.view = view;
@@ -47,13 +51,15 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
             // just release the press
             endPress();
         }
-        return false;
+
+        return true;
+        //return false;
     }
 
     private void startPress() {
         if (!pressed) {
             pressed = true;
-            handler.removeCallbacks(imageButtonRunnable);
+            //handler.removeCallbacks(imageButtonRunnable);
             handler.removeCallbacks(confirmClickRunnable);
             //view.setBackground(bgDrawablePressed);
             if (marker != null)
@@ -64,7 +70,7 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
     private boolean endPress() {
         if (pressed) {
             this.pressed = false;
-            handler.removeCallbacks(imageButtonRunnable);
+            //handler.removeCallbacks(imageButtonRunnable);
             handler.removeCallbacks(confirmClickRunnable);
             //view.setBackground(bgDrawableNormal);
             if (marker != null)
@@ -83,23 +89,14 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
         }
     };
 
-    private final Runnable imageButtonRunnable = new Runnable() {
-        @Override
-        public void run() {
-             if (endPress()){
-                 onClickImageButton(view, marker);
-             }
-        }
-    };
 
     /**
      * This is called after a successful click
      */
-    protected void onClickImageButton(View v, Marker marker){
-
-    }
 
     protected void onClickConfirmed(View v, Marker marker) {
 
     }
+
+
 }
