@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class MapListFragment extends Fragment {
     private ArrayList<ArrayList<HashMap<String,String>>> question = new ArrayList<>();
 
     private final String[] items = {"待解析", "待料/待工", "其他"};
-    private final ArrayList<String> itemSelect = new ArrayList<>();
+
     private int itemNo = 1;
 
     private RecyclerView mainRecyclerView;
@@ -158,6 +159,7 @@ public class MapListFragment extends Fragment {
     }
     private class SubViewAdapter extends RecyclerView.Adapter<SubViewAdapter.SubViewHolder>{
         private int item_position = 0;
+        private String memoText = "";
         public SubViewAdapter(int position){
             item_position = position;
         }
@@ -166,6 +168,7 @@ public class MapListFragment extends Fragment {
             private TextView textView_Error_Question;
             private LinearLayout LLRicycleViewSubItem;
             private ImageButton edit;
+
 //            private TextView subMemo;
 
             public SubViewHolder(@NonNull View itemView) {
@@ -205,26 +208,16 @@ public class MapListFragment extends Fragment {
                     builder.setSingleChoiceItems(items, itemNo, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
-                            switch (which){
-                                case 0:
-                                    itemNo = which;
-                                    itemSelect.add(items[which]);
-                                    Toast.makeText(getContext(), items[which], Toast.LENGTH_SHORT).show();
-                                case 1:
-                                    itemNo = which;
-                                    itemSelect.add(items[which]);
-                                    Toast.makeText(getContext(), items[which], Toast.LENGTH_SHORT).show();
-                                case 2:
-                                    itemNo = which;
-                                    itemSelect.add(items[which]);
-                                    Toast.makeText(getContext(), items[which], Toast.LENGTH_SHORT).show();
-                            }
+                            memoText = items[which];
+
+//                            }
                         }
                     });
                     builder.setPositiveButton("提交", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            holder.subMemo.setText(itemSelect.get(position));
+                            //holder.subMemo.setText(itemSelect.get(position));
+                            holder.subMemo.setText(memoText);
 
                             Toast.makeText(getContext(), "提交成功", Toast.LENGTH_SHORT).show();
                         }
@@ -243,6 +236,7 @@ public class MapListFragment extends Fragment {
         @Override
         public int getItemCount() {
             //計算RecycleView要顯示的項目
+
             return question.get(item_position).size();
 
         }

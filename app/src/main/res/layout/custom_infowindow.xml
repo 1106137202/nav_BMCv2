@@ -191,7 +191,7 @@
                     android:textSize="@dimen/text" />
 
                 <EditText
-                    android:id="@+id/memoEdt"
+                    android:id="@+id/edtMemo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
