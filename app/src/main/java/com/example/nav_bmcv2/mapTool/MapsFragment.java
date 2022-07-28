@@ -22,12 +22,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -88,6 +91,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
         private LocationManager mLocationMgr;
         private TextView txtNo;
         private ImageView imgVIew;
+        private EditText text;
 
         static final LatLng latlng1 = new LatLng(28.5355, 77.3910);
         static final LatLng latlng2 = new LatLng(28.6208768, 77.3726377);
@@ -109,6 +113,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
                 View view = inflater.inflate(R.layout.fragment_maps, container, false);
                 //取得map_relative_layout
                 mapWrapperLayout = (MapWrapperLayout) view.findViewById(R.id.map_relative_layout);
+                text = (EditText) view.findViewById(R.id.tmpText);
+
+
 
 
                 // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -191,8 +198,22 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,
 
                 mapWrapperLayout.init(mMap, getPixelsFromDp(getActivity(), 39 + 20));
                 //----------------------------------------------------------------------------------------
-                InfoWindowLayout infoWindowLayout = new InfoWindowLayout(getActivity(), mMap, mapWrapperLayout);
+                InfoWindowLayout infoWindowLayout = new InfoWindowLayout(getActivity(), mMap, mapWrapperLayout, text);
                 infoWindow = infoWindowLayout.set_infoWindow();
+//                EditText memoEdit = infoWindow.findViewById(R.id.memoEdt);
+//                text.setOnKeyListener(new View.OnKeyListener(){
+//                        @Override
+//                        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+//                                if(i==66){
+//                                        view.setVisibility(View.GONE);
+//                                        view.clearFocus();
+//                                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                                        imm.toggleSoftInput(R.id.tmpText, 0);
+//                                        memoEdit.setText(text.getText());
+//                                }
+//                                return false;
+//                        }
+//                });
                 //----------------------------------------------------------------------------------------
 //                mMap.addMarker(new MarkerOptions().position(Data.now_position).title("目前")
 //                        // below line is use to add custom marker on our map.

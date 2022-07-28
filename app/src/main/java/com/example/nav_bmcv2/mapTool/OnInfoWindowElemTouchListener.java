@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
+
 import com.google.android.gms.maps.model.Marker;
 
 public class OnInfoWindowElemTouchListener implements OnTouchListener {
@@ -15,6 +17,8 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
 
     private Marker marker;
     private boolean pressed = false;
+
+
 
     public OnInfoWindowElemTouchListener(View view) {
         this.view = view;
@@ -49,14 +53,16 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
             // just release the press
             endPress();
         }
-        return false;
+
+        return true;
+        //return false;
     }
 
     private void startPress() {
         System.out.println("Listener startPress");
         if (!pressed) {
             pressed = true;
-            handler.removeCallbacks(imageButtonRunnable);
+            //handler.removeCallbacks(imageButtonRunnable);
             handler.removeCallbacks(confirmClickRunnable);
             //view.setBackground(bgDrawablePressed);
             if (marker != null)
@@ -68,7 +74,7 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
         System.out.println("Listener endPress");
         if (pressed) {
             this.pressed = false;
-            handler.removeCallbacks(imageButtonRunnable);
+            //handler.removeCallbacks(imageButtonRunnable);
             handler.removeCallbacks(confirmClickRunnable);
             //view.setBackground(bgDrawableNormal);
             if (marker != null)
@@ -88,6 +94,8 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
         }
     };
 
+<<<<<<< HEAD
+=======
     private final Runnable imageButtonRunnable = new Runnable() {
         @Override
         public void run() {
@@ -97,15 +105,21 @@ public class OnInfoWindowElemTouchListener implements OnTouchListener {
              }
         }
     };
+>>>>>>> origin/master
 
     /**
      * This is called after a successful click
      */
+<<<<<<< HEAD
+=======
     protected void onClickImageButton(View v, Marker marker){
         System.out.println("Listener onClickImageButton");
     }
+>>>>>>> origin/master
 
     protected void onClickConfirmed(View v, Marker marker) {
         System.out.println("Listener onClickConfirmed");
     }
+
+
 }

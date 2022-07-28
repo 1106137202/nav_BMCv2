@@ -253,6 +253,7 @@
 
             <Button
                 android:id="@+id/confirm"
+                android:tag="confirm"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
