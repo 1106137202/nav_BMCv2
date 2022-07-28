@@ -48,11 +48,15 @@ public class InfoWindowLayout {
     private Context context;
     private GoogleMap mMap;
     private ViewGroup infoWindow;
-    private Button cancel;
-    private Button confirm;
+
     private OnInfoWindowElemTouchListener cancelListener, confirmListener, imageButtonListener;
     private MapWrapperLayout mapWrapperLayout;
+
+    private Button cancel;
+    private Button confirm;
+    private EditText edtMemo;
     private ImageButton imageButton;
+
     private final String[] items = {"待解析", "待料/待工", "其他"};
     private final ArrayList<Integer> itemSelect = new ArrayList<>();
 
@@ -79,6 +83,7 @@ public class InfoWindowLayout {
 
         cancel = (Button)infoWindow.findViewById(R.id.cancel);
         confirm = (Button)infoWindow.findViewById(R.id.confirm);
+        edtMemo = (EditText)infoWindow.findViewById(R.id.edtMemo);
 
         LayoutInflater change = LayoutInflater.from(infoWindow.getContext());
         imgView = infoWindow.findViewById(R.id.imgView);
@@ -96,6 +101,7 @@ public class InfoWindowLayout {
         };
         //cancel事件加入
         cancel.setOnTouchListener(cancelListener);
+        System.out.println("cancel事件加入");
 
         //confirm
         confirmListener = new OnInfoWindowElemTouchListener(confirm){
@@ -126,10 +132,12 @@ public class InfoWindowLayout {
                     }
                 });
                 builder.show();
+                System.out.println("confirm dialog");
             }
         };
         //confirm事件加入
         confirm.setOnTouchListener(confirmListener);
+        System.out.println("confirm事件加入");
 
         //-----------------------------------------------------------------
         //EditText
@@ -223,7 +231,11 @@ public class InfoWindowLayout {
                 return infoWindow;
             }
         });
+<<<<<<< HEAD
 
+=======
+        System.out.println("Adapter");
+>>>>>>> origin/master
         return infoWindow;
     }
     public void extend_keyboard(boolean isOpen){

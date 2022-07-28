@@ -50,6 +50,7 @@ public class MapWrapperLayout extends RelativeLayout {
      * Must be called before we can route the touch events
      */
     public void init(GoogleMap map, int bottomOffsetPixels) {
+        System.out.println("Wrapper init");
         this.map = map;
         this.bottomOffsetPixels = bottomOffsetPixels;
     }
@@ -59,12 +60,14 @@ public class MapWrapperLayout extends RelativeLayout {
      * or InfoWindowAdapter.getInfoWindow.
      */
     public void setMarkerWithInfoWindow(Marker marker, View infoWindow) {
+        System.out.println("Wrapper setMarkerWithInfoWindow");
         this.marker = marker;
         this.infoWindow = infoWindow;
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        System.out.println("Wrapper dispatchTouchEvent");
         boolean ret = false;
         // Make sure that the infoWindow is shown and we have all the needed references
         if (marker != null && marker.isInfoWindowShown() && map != null && infoWindow != null) {
